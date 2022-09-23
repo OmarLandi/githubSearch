@@ -1,0 +1,7 @@
+{
+  "gitHub": {
+    "domain": "https://api.github.com",
+    "users": "/search/users?q=${name}",
+    "repositories": "/search/repositories?q=${name}"
+  }
+}
