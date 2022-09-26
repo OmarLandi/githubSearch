@@ -5,7 +5,7 @@ import Search from 'common/components/search/Search';
 interface NewSearchProps {
   title: string;
   description: string;
-  handleSearch: () => void;
+  handleSearch: any;
 }
 
 const StyledContainer = styled.div`{
@@ -22,7 +22,7 @@ const NewSearch = (props: NewSearchProps) => {
           title={title}
           description={description}
         >
-          <Search onSearch={handleSearch} />
+          <Search handleSearch={handleSearch} />
         </Jumbotron>
       </div>
     </StyledContainer>

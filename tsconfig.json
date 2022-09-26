@@ -11,6 +11,8 @@
       "components": ["src/common/components"],
       "containers": ["src/common/containers"],
       "pages": ["src/pages"],
+      "utils": ["src/utils"],
+      "services": ["src/services"],
     },
     "allowJs": true,
     "skipLibCheck": true,

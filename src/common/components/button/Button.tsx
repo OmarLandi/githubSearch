@@ -4,7 +4,7 @@ import classNames from 'classnames';
 interface ButtonProps {
   type?: 'button' | 'submit' | 'reset' | undefined;
   className?: string;
-  onClick: () => void;
+  onClick: any;
   text: string;
 }
 
