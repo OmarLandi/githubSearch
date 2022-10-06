@@ -3,24 +3,42 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import endpoints from './endpoints.json';
 import templateString from 'utils/templateString';
 
-const findUsers = createAsyncThunk('findUsers',async (data: {name: string, page?: number}, thunkAPI) => {
-  if (!data.page) {
-    data.page = 1;
-  };
-  console.log(data);
-  const response = await axios.get(templateString(endpoints.users, data))
-  return response.data
-})
-
 interface UsersState {
-  total_count: number;
+  totalCount: number;
+  searchValue: string;
+  limit: number;
   list: any[];
+  currentPage: number;
+  pagination: number;
 }
 
 const initialState: UsersState = {
-  total_count: 0,
-  list: []
+  totalCount: 0,
+  searchValue: '',
+  limit: 50,
+  list: [],
+  currentPage: 1,
+  pagination: 0
 }
+
+const findUsers = createAsyncThunk('findUsers',async (data: {name?: string, page?: number, limit?: number}, thunkAPI) => {
+  const state: any = thunkAPI.getState();
+  data.limit = initialState.limit;
+
+  if (!data.page) {
+    data.page = initialState.currentPage;
+  };
+
+  if (!data.name) {
+    data.name = state.users.searchValue;
+  }
+
+  const response = await axios.get(templateString(endpoints.users, data))
+  return {
+    data: response.data,
+    name: data.name
+  }
+})
 
 export const usersSlice = createSlice({
   name: 'users',
@@ -29,8 +47,10 @@ export const usersSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(findUsers.fulfilled, (state, action) => {
       if (action.payload) {
-        state.list = action.payload.items;
-        state.total_count = action.payload.total_count;
+        state.list.push(action.payload.data.items);
+        state.totalCount = action.payload.data.total_count;
+        state.pagination = Math.ceil(action.payload.data.total_count / initialState.limit);
+        state.searchValue = action.payload.name || '';
       }
     })
   },

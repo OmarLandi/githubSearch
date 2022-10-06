@@ -2,6 +2,9 @@ import Axios from 'axios';
 import endpoints from '../services/endpoints.json';
 
 Axios.defaults.baseURL = endpoints.baseURL;
+const token = `${process.env.REACT_APP_API_USER}:${process.env.REACT_APP_API_TOKEN}`;
+const authorization= `Basic ${btoa(token)}`;
+Axios.defaults.headers.common['Authorization'] = authorization;
 
 interface errorProps {
   response: {

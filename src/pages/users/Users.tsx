@@ -4,6 +4,13 @@ import NewSearch from "common/containers/newSearch/NewSearch";
 import Search from "common/components/search/Search";
 import UserList from "common/containers/userList/UsersList";
 import { findUsers } from 'services/usersSlice';
+import styled from 'styled-components';
+
+const StyledContainer = styled.div`{
+  position: relative;
+  min-height: calc(100vh - 80px);
+  padding-bottom: 80px;
+}`
 
 const Users = () => {
   const dispatch = useAppDispatch();
@@ -14,6 +21,12 @@ const Users = () => {
     dispatch(findUsers({ name: value }));
   };
 
+  const addData = (step: number) => {
+    if (step > users.currentPage) {
+      dispatch(findUsers({ page: step }));
+    }
+  }
+
   useEffect(() => {
     if (users.list.length > 0) {
       setResult(true);
@@ -21,11 +34,11 @@ const Users = () => {
   }, [users]) 
 
   return result ? (
-    <>
+    <StyledContainer>
       <Search handleSearch={() => console.log()} />
-      <p>Resultados: {users.total_count} </p>
-      <UserList list={users.list} />
-    </>
+      <p>Resultados: {users.totalCount} </p>
+      <UserList list={users.list} addData={addData} limit={users.pagination}/>
+    </StyledContainer>
   ) : (
     <NewSearch
       title="Search users"
