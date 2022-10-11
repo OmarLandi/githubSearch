@@ -3,7 +3,7 @@ import { useAppDispatch, useAppSelector } from "redux/hooks";
 import NewSearch from "common/containers/newSearch/NewSearch";
 import Search from "common/components/search/Search";
 import UserList from "common/containers/userList/UsersList";
-import { findUsers } from 'services/usersSlice';
+import { findUsers, clearSearch } from 'services/usersSlice';
 import styled from 'styled-components';
 
 const StyledContainer = styled.div`{
@@ -18,6 +18,7 @@ const Users = () => {
   const users = useAppSelector((store) => store.users)
 
   const handleSearch = (value: string) => {
+    dispatch(clearSearch());
     dispatch(findUsers({ name: value }));
   };
 
@@ -35,7 +36,7 @@ const Users = () => {
 
   return result ? (
     <StyledContainer>
-      <Search handleSearch={() => console.log()} />
+      <Search value={users.searchValue} handleSearch={handleSearch} />
       <p>Resultados: {users.totalCount} </p>
       <UserList list={users.list} addData={addData} limit={users.pagination}/>
     </StyledContainer>

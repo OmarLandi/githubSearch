@@ -43,7 +43,9 @@ const findUsers = createAsyncThunk('findUsers',async (data: {name?: string, page
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {},
+  reducers: {
+    clearSearch: () => initialState
+  },
   extraReducers: (builder) => {
     builder.addCase(findUsers.fulfilled, (state, action) => {
       if (action.payload) {
@@ -58,4 +60,5 @@ export const usersSlice = createSlice({
 
 // Action creators are generated for each case reducer function
 export { findUsers };
-export default usersSlice.reducer
+export const { clearSearch } = usersSlice.actions;
+export default usersSlice.reducer;
