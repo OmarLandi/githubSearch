@@ -1,5 +1,4 @@
 {
   "baseURL": "https://api.github.com",
-  "users": "/search/users?q=${name}&per_page=${limit}&page=${page}",
-  "repositories": "/search/repositories?q=${name}&per_page=${limit}&page=${page}"
+  "searchApi": "/search/${indicator}?q=${name}&per_page=${limit}&page=${page}"
 }

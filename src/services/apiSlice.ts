@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 import endpoints from './endpoints.json';
 import templateString from 'utils/templateString';
 
-interface UsersState {
+interface ApiState {
   totalCount: number;
   searchValue: string;
   limit: number;
@@ -12,7 +12,7 @@ interface UsersState {
   pagination: number;
 }
 
-const initialState: UsersState = {
+const initialState: ApiState = {
   totalCount: 0,
   searchValue: '',
   limit: 50,
@@ -21,7 +21,7 @@ const initialState: UsersState = {
   pagination: 0
 }
 
-const findUsers = createAsyncThunk('findUsers',async (data: {name?: string, page?: number, limit?: number}, thunkAPI) => {
+const findResults = createAsyncThunk('findResults',async (data: {indicator: string, name?: string, page?: number, limit?: number}, thunkAPI) => {
   const state: any = thunkAPI.getState();
   data.limit = initialState.limit;
 
@@ -33,21 +33,21 @@ const findUsers = createAsyncThunk('findUsers',async (data: {name?: string, page
     data.name = state.users.searchValue;
   }
 
-  const response = await axios.get(templateString(endpoints.users, data))
+  const response = await axios.get(templateString(endpoints.searchApi, data))
   return {
     data: response.data,
     name: data.name
   }
 })
 
-export const usersSlice = createSlice({
-  name: 'users',
+export const apiSlice = createSlice({
+  name: 'apiSearch',
   initialState,
   reducers: {
     clearSearch: () => initialState
   },
   extraReducers: (builder) => {
-    builder.addCase(findUsers.fulfilled, (state, action) => {
+    builder.addCase(findResults.fulfilled, (state, action) => {
       if (action.payload) {
         state.list.push(action.payload.data.items);
         state.totalCount = action.payload.data.total_count;
@@ -59,6 +59,6 @@ export const usersSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer function
-export { findUsers };
-export const { clearSearch } = usersSlice.actions;
-export default usersSlice.reducer;
+export { findResults };
+export const { clearSearch } = apiSlice.actions;
+export default apiSlice.reducer;

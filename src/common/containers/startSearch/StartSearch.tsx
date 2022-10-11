@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import Jumbotron from "common/components/jumbotron";
 import Search from 'common/components/search/Search';
 
-interface NewSearchProps {
+interface StartSearchProps {
   title: string;
   description: string;
   handleSearch: any;
@@ -12,7 +12,7 @@ const StyledContainer = styled.div`{
   min-height: calc(100vh - 80px)
 }`
 
-const NewSearch = (props: NewSearchProps) => {
+const StartSearch = (props: StartSearchProps) => {
   const { title, description, handleSearch } = props;
 
   return (
@@ -29,4 +29,4 @@ const NewSearch = (props: NewSearchProps) => {
   );
 }
 
-export default NewSearch;
+export default StartSearch;

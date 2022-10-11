@@ -9,9 +9,9 @@ interface UserProps {
 }
 
 interface UserListProps {
-  list: any[]
-  addData: (step: number) => void;
-  limit: number;
+  list?: any[]
+  addData?: (step: number) => void;
+  limit?: number;
 }
 
 const UserList = (props: UserListProps) => {
@@ -20,14 +20,14 @@ const UserList = (props: UserListProps) => {
   const [ stepList, setStepList ] = useState([])
 
   useEffect(() => {
-    if (list[step - 1]) {
+    if (list && list[step - 1]) {
       setStepList(list[step - 1]);
     }
   }, [step, list]);
 
   const handleChangeStep = (value: number) => {
     setStep(value);
-    if (value > step && list[value - 1] === undefined) {
+    if (list && addData && value > step && list[value - 1] === undefined) {
       addData(value);
     }
   }
@@ -53,7 +53,7 @@ const UserList = (props: UserListProps) => {
           })
         }
       </div>
-      <Pagination step={step} handleSelect={handleChangeStep} limit={limit}/>
+      <Pagination step={step} handleSelect={handleChangeStep} limit={limit || 0}/>
     </>
   )
 }
