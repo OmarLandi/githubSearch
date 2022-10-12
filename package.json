@@ -1,8 +1,8 @@
 {
   "name": "githubsearch",
-  "homepage": "https://OmarLandi.github.io/githubsearch",
+  "homepage": "https://githubsearch-72mqayqv4-omarlandi.vercel.app/",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.5",
     "@testing-library/jest-dom": "^5.16.5",
