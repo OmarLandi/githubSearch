@@ -12,6 +12,12 @@ const StyledContainer = styled.div`{
   min-height: calc(100vh - 80px)
 }`
 
+const StyledSearch = styled(Search)`{
+  & .invalid-feedback {
+    margin-left: -70px;
+  }
+}`
+
 const StartSearch = (props: StartSearchProps) => {
   const { title, description, handleSearch } = props;
 
@@ -22,7 +28,7 @@ const StartSearch = (props: StartSearchProps) => {
           title={title}
           description={description}
         >
-          <Search handleSearch={handleSearch} />
+          <StyledSearch handleSearch={handleSearch} className="justify-content-center"/>
         </Jumbotron>
       </div>
     </StyledContainer>

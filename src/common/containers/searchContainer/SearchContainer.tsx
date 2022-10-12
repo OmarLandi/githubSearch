@@ -1,7 +1,8 @@
 import { useEffect, useState, cloneElement } from "react";
 import { useAppDispatch, useAppSelector } from "redux/hooks";
 import StartSearch from "common/containers/startSearch";
-import Search from "common/components/search/Search";
+import Search from "common/components/search";
+import Loading from "common/components/loading";
 import { findResults, clearSearch } from 'services/apiSlice';
 import styled from 'styled-components';
 
@@ -20,14 +21,15 @@ interface SearchContainerProps {
   }
 }
 
-
 const SearchContainer = (props: SearchContainerProps) => {
   const { children, constants } = props;
   const dispatch = useAppDispatch();
   const [result, setResult] = useState(false);
+  const [loading, setLoading] = useState(false);
   const search = useAppSelector((store) => store.search)
 
   const handleSearch = (value: string) => {
+    setLoading(true);
     dispatch(clearSearch());
     dispatch(findResults({ name: value, indicator: constants.indicator }));
   };
@@ -39,21 +41,36 @@ const SearchContainer = (props: SearchContainerProps) => {
   }
 
   useEffect(() => {
-    if (search.list.length > 0) {
-      setResult(true);
+    dispatch(clearSearch());
+    setResult(false);
+  }, []);
+
+  useEffect(() => {
+    setResult(false);
+    if (search.searchValue !== '') {
+      setLoading(false);
+      if (search.list.length > 0) {
+        setResult(true);
+      }
     }
   }, [search]) 
 
-  return result ? (
+  return loading ? (
+    <Loading />
+  ) : result ? (
     <StyledContainer>
       <Search value={search.searchValue} handleSearch={handleSearch} />
-      <p>Resultados: {search.totalCount} </p>
+      <p className="m-1"><em>Results: {search.totalCount}</em></p>
       {
-        cloneElement(children, {
-          list: search.list,
-          addData: addData,
-          limit: search.pagination
-        })
+        search.totalCount === 0 ? 
+          <div className="alert alert-info mt-3" role="alert">
+            Not found results
+          </div>
+        : cloneElement(children, {
+            list: search.list,
+            addData: addData,
+            limit: search.pagination
+          })
       }
     </StyledContainer>
   ) : (
