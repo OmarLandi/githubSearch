@@ -12,6 +12,10 @@ interface RepositoriesProps {
   license:  {
     name: string;
   };
+  owner: {
+    login: string;
+    html_url: string;
+  };
   updated_at: string;
 }
 
@@ -41,11 +45,11 @@ const RepositoriesList = (props: RepositoriesListProps) => {
 
   return (
     <>
-      <div className="row">
+      <div className="row card-deck">
         {
           stepList.map((repositorie: RepositoriesProps, index: number) => {
             return (
-              <div className="col-md-6 col-lg-4" key={index.toString()}>
+              <div className="col-md-6 col-lg-4 d-flex align-items-stretch" key={index.toString()}>
                 <RepositorieCard {...repositorie}/>
               </div>
             );
